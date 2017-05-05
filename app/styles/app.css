@@ -1,3 +1,9 @@
+h1 {
+  text-align: center;
+}
 #my-canvas {
-  background-color: #EDC9AF;
+  background-color: #424242;
+}
+.canvas {
+  text-align: center;
 }
