@@ -48,3 +48,29 @@ Specify what it takes to deploy your app.
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+
+
+# Commented out code
+
+### commented out code from move function
+
+// let stationary =! this.get('isStationary') ||! this.pathNotFree(direction);
+// if (! stationary) {
+//   this.set('direction', direction);
+//   this.set('isStationary', false);
+//   this.moveLoop();
+// }
+// if (this.pathNotFree(direction)){
+//   console.log('pathNotFree');
+//   this.set('x', this.nextCell('x', direction));
+//   this.set('y', this.nextCell('y', direction));
+//   let cells = this.get('cells');
+//   if (cells[this.get('y')][this.get('x')] == 0){
+//     cells[this.get('y')][this.get('x')] = -1;
+//     this.incrementProperty('score');
+//     // All the dots are consumed
+//     if (this.get('score') == this.get('dots')){
+//       this.resetGame();
+//     }
+//   }
+// }
