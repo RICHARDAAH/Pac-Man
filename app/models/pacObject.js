@@ -25,13 +25,10 @@ export default Ember.Object.extend(sharedElements, {
     if (this.moveCompleted()){
       this.finishMovement();
       this.changeNextDirection();
-      console.log(this.get('numCycles'));
     } else if (this.get('direction') == 'stationary'){
       this.changeNextDirection();
-      console.log(this.get('numCycles'));
     } else {
       this.incrementProperty('numCycles');
-      console.log(this.get('numCycles'));
     }
   },
   moveCompleted(){
@@ -54,4 +51,10 @@ export default Ember.Object.extend(sharedElements, {
   nextCell(coordinate, direction){
     return this.get(coordinate) + this.get(`directions.${direction}.${coordinate}`);
   },
+  reset() {
+    this.set('x', 0);
+    this.set('y', 0);
+    this.set('numCycles', 0);
+    this.set('direction', 'stationary');
+  }
 })
