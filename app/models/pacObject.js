@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import sharedElements from '../Mixins/sharedElements';
 
-export default Ember.Component.extend(KeyboardShortcuts, {
+export default Ember.Object.extend(sharedElements, {
   x: 1,
   y: 2,
   direction: 'stationary',
@@ -13,13 +13,34 @@ export default Ember.Component.extend(KeyboardShortcuts, {
     let scale  = 1/2;
     this.drawCirlce(x, y, scale, this.get('direction'));
   },
-  movePacman(){
+  changeNextDirection(){
     let nextDirection = this.get('nextDirection');
     if (this.pathNotFree(nextDirection)) {
       this.set('direction','stationary');
     } else {
       this.set('direction', nextDirection)
     }
+  },
+  movePacman(){
+    if (this.moveCompleted()){
+      this.finishMovement();
+      this.changeNextDirection();
+      console.log(this.get('numCycles'));
+    } else if (this.get('direction') == 'stationary'){
+      this.changeNextDirection();
+      console.log(this.get('numCycles'));
+    } else {
+      this.incrementProperty('numCycles');
+      console.log(this.get('numCycles'));
+    }
+  },
+  moveCompleted(){
+    return this.get('numCycles') == this.get('frameRate');
+  },
+  finishMovement() {
+    this.set('x', this.nextCell('x', this.get('direction')));
+     this.set('y', this.nextCell('y', this.get('direction')));
+     this.set('numCycles', 1);
   },
   pathNotFree(direction){
     let cell = this.getCellType(direction);
