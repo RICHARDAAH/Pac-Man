@@ -13,38 +13,29 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedElements, {
   },
   dots: 0,
   score: 0,
-  isStationary: true,
-  screenWidth: Ember.computed(function(){
-    return this.get('level.cells')[0].length;
-  }),
-  screenHeight: Ember.computed(function(){
-    return this.get('level.cells').length;
-  }),
-  canvasWidth: Ember.computed(function(){
-    return this.get('screenWidth') * this.get('cellSize');
-  }),
-  canvasHeight: Ember.computed(function(){
-    let height = this.get('screenHeight') * this.get('cellSize');
-    return height;
-  }),
+  levelNumber: 1,
+  // isStationary: true,
 },
 
 {
   didInsertElement(){
-    this.drawMaze();
-    this.get('level.cells').forEach(row => {
-      row.forEach(cell => {
-        if(cell == 0){
-          this.set('dots', this.get('dots') + 1);
-        }
-      })
+    let level = Level.create();
+    this.set('level', level);
+    let pacObject = PacObject.create({
+      level: level
     });
-    this.set('level', Level.create());
-    this.set('pacObject', PacObject.create({
-      level: Level.create()
-    }));
-    this.get('pacObject').drawPacman();
+    this.set('pacObject', pacObject);
+    // this.drawMaze();
+    // this.get('level.cells').forEach(row => {
+    //   row.forEach(cell => {
+    //     if(cell == 0){
+    //       this.set('dots', this.get('dots') + 1);
+    //     }
+    //   })
+    // });
+    // this.get('pacObject').drawPacman();
     this.loop();
+    pacObject.movePacman();
   },
   direction: 'right',
   outOfBounds(){
@@ -54,13 +45,13 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedElements, {
     let screenHeight = this.get('screenHeight');
     return (x < 0 || y < 0 || x >= screenWidth || y >= screenHeight);
   },
-  touchMaze(){
-    let x = this.get('x');
-    let y = this.get('y');
-    return this.get('level.cells')[y][x] == 1;
-  },
+  // touchMaze(){
+  //   let x = this.get('x');
+  //   let y = this.get('y');
+  //   return this.get('level.cells')[y][x] == 1;
+  // },
   loop() {
-    this.get('pacObject').movePacman();
+    // this.get('pacObject').movePacman();
     this.consumeDots();
     this.clearScreen();
     this.drawMaze();
@@ -73,7 +64,8 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedElements, {
       cells[this.get('pacObject.y')][this.get('pacObject.x')] = -1;
       this.incrementProperty('score');
       // All the dots are consumed
-      if (this.get('score') == this.get('dots')) {
+      if (this.get('level').levelComplete()) {
+        this.incrementProperty('levelNumber');
         this.resetGame();
       }
     }
@@ -92,7 +84,7 @@ drawMaze(){
   let ctx       = this.get('ctx');
   ctx.fillStyle = 'yellow';
   let cells     = this.get('level.cells');
-  let cellSize  = this.get('cellSize');
+  let cellSize  = this.get('level.cellSize');
   cells.forEach((row, i) => {
     row.forEach((grid, j) => {
       if(grid == 1){
@@ -105,7 +97,7 @@ drawMaze(){
   });
 },
 resetGame(){
-  this.get('PacObject').reset();
+  this.get('pacObject').reset();
   this.get('level').reset();
   // this.set('score', 0)
 }
