@@ -21,6 +21,7 @@ export default Ember.Object.extend({
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
   ],
 
+  startPosition: {x: 0, y: 0},
   cellSize: 40,
   boardWidth: Ember.computed(function(){
     return this.get('cells')[0].length;

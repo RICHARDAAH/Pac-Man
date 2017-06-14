@@ -2,8 +2,8 @@ import Ember from 'ember';
 import sharedElements from '../Mixins/sharedElements';
 
 export default Ember.Object.extend(sharedElements, {
-  x: 1,
-  y: 2,
+  x: null,
+  y: null,
 
   direction: 'down',
   nextDirection: 'down',
@@ -63,10 +63,10 @@ export default Ember.Object.extend(sharedElements, {
   },
 
   resetGame(){
-    this.set('x', 0);
-    this.set('y', 0);
+    this.set('x', this.get('level.startPosition.x'));
+    this.set('y', this.get('level.startPosition.y'));
     this.set('cycleCount', 0);
     this.set('direction', 'stationary')
   },
-  
+
 })
