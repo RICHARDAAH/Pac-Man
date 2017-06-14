@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Object.extend({
-  // 1 = wall, 0 = dot, -1 = empty
 
+  // 1 = wall, 0 = dot, -1 = empty
   cells: [
     [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -20,36 +20,39 @@ export default Ember.Object.extend({
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
   ],
+
   cellSize: 40,
-  screenWidth: Ember.computed(function(){
+  boardWidth: Ember.computed(function(){
     return this.get('cells')[0].length;
   }),
-  screenHeight: Ember.computed(function(){
-    return this.get('cells').length;
+  boardHeight: Ember.computed(function(){
+    return this.get('cells.length');
   }),
-  canvasWidth: Ember.computed(function(){
-    return this.get('screenWidth') * this.get('cellSize');
+  pixelWidth: Ember.computed(function(){
+    return this.get('boardWidth') * this.get('cellSize');
   }),
-  canvasHeight: Ember.computed(function(){
-    let height = this.get('screenHeight') * this.get('cellSize');
-    return height;
+  pixelHeight: Ember.computed(function() {
+    return this.get('boardHeight') * this.get('cellSize');
   }),
+
   levelComplete() {
+    let dotsLeft = false;
     let cells = this.get('cells');
-    cells.forEach((row) => {
-      row.forEach((grid) => {
-        if (grid == 0){
-          return false;
+
+    cells.forEach((row)=>{
+      row.forEach((cell)=>{
+        if(cell == 0){
+          dotsLeft = true;
         }
-      });
-    });
-    return true;
+      })
+    })
+    return !dotsLeft;
   },
-  reset() {
+  resetGame() {
     let cells = this.get('cells');
-    cells.forEach((row, i) => {
-      row.forEach((grid, j) => {
-        if (grid == -1){
+    cells.forEach((row, i)=>{
+      row.forEach((cell, j)=>{
+        if (cell == -1){
           cells[i][j] = 0;
         }
       });
