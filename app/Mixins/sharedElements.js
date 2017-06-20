@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
-  
+
   directions: {
     'up': {x: 0, y: -1},
     'down': {x: 0, y: 1},
@@ -15,12 +15,12 @@ export default Ember.Mixin.create({
     return document.getElementById("canvas").getContext("2d");
   }),
 
-  drawCircle(x, y, scale, direction) {
+  drawCircle(x, y, scale, direction, colour = '#555') {
     let ctx = this.get('ctx')
     let cellSize = this.get('level.cellSize');
     let pixelX = (x + 1/2 + this.offsetFor('x', direction)) * cellSize;
     let pixelY = (y + 1/2 + this.offsetFor('y', direction)) * cellSize;
-    ctx.fillStyle = 'yellow';
+    ctx.fillStyle = colour;
     ctx.beginPath();
     ctx.arc(pixelX, pixelY, cellSize * scale, 0, Math.PI * 2, false);
     ctx.closePath();

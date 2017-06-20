@@ -4,6 +4,7 @@ import SharedElements from '../Mixins/sharedElements';
 import PacObject from '../models/pacObject';
 import Level from '../models/level';
 import Level2 from '../models/level2';
+import Ghost from '../models/ghost';
 
 export default Ember.Component.extend(KeyboardShortcuts, SharedElements, {
     keyboardShortcuts: {
@@ -22,8 +23,10 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedElements, {
     this.set('level', level);
     let pac = PacObject.create({level: level, x: level.get('startPosition.x'), y: level.get('startPosition.y')});
     this.set('pac', pac);
+    let ghost = Ghost.create({level: level, x: 2, y: 3});
+    this.set('ghost', ghost);
     this.loop();
-    pac.movePacman();
+    pac.moveLoop();
   },
 
     loop(){
@@ -31,6 +34,7 @@ export default Ember.Component.extend(KeyboardShortcuts, SharedElements, {
     this.clearScreen();
     this.drawMaze();
     this.get('pac').drawPacman();
+    this.get('ghost').drawGhost();
     Ember.run.later(this, this.loop, 1000/60);
   },
 
